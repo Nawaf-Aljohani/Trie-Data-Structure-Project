@@ -1,9 +1,10 @@
 import java.util.ArrayList;
 
+
 public class Trie {
 
 	protected TrieNode root;
-	protected final int alphabets = 26;
+	protected final int ALPHAPETS = 26;
 	protected int countOfNodes = 0;
 
 	public Trie() {
@@ -12,14 +13,14 @@ public class Trie {
 
 	// (a)
 	public boolean contains(String word) {
+		// we change the letters of the word into upper case
 		word = word.toUpperCase();
 
-		int level, index;
-		int length = word.length();
+		int index;
 		TrieNode node = root;
-		for (level = 0; level < length; level++) {
-			index = word.charAt(level) - 'A';
-
+		for (int x = 0; x < word.length(); x++) {
+			index = word.charAt(x) - 'A';
+			
 			if (node.children[index] == null)
 				return false;
 
@@ -34,30 +35,23 @@ public class Trie {
 
 		prefix = prefix.toUpperCase();
 		TrieNode node = root;
-		for (int i = 0; i < prefix.length(); i++) {
-			char ch = prefix.charAt(i);
-			int index = ch - 'A';
+		for (int x = 0; x < prefix.length(); x++) {
+			int index = prefix.charAt(x) - 'A';
 			if (node.children[index] == null) {
 				return false;
 			}
 			node = node.children[index];
 		}
-		System.out.println("True");
 		return true;
 	}
 
 	// (c)
 	public void insert(String word) {
-		if (word == null || word.isEmpty())
-			return;
 
 		word = word.toUpperCase();
-
 		TrieNode current = root;
-		for (int i = 0; i < word.length(); i++) {
-
-			char c = word.charAt(i);
-			int index = c - 'A';
+		for (int x = 0; x < word.length(); x++) {
+			int index = word.charAt(x) - 'A';
 			if (current.children[index] == null) {
 				TrieNode node = new TrieNode();
 				current.children[index] = node;
@@ -81,16 +75,15 @@ public class Trie {
 	}
 
 	public TrieNode deleteHelper(TrieNode root, String key, int depth) {
-		if (root == null)
-			return null;
+
 
 		if (depth == key.length()) {
 			if (root.isEndOfWord)
 				root.isEndOfWord = false;
 
-			if (isEmpty()) {
+			if (isEmpty()) 
 				root = null;
-			}
+			
 			return root;
 		}
 
@@ -106,7 +99,7 @@ public class Trie {
 	// (e)
 	public boolean isEmpty() {
 		int counter = 0;
-		for (int x = 0; x < alphabets; x++)
+		for (int x = 0; x < ALPHAPETS; x++)
 			if (root.children[x] == null)
 				counter += 1;
 
@@ -118,21 +111,21 @@ public class Trie {
 
 	// (f)
 	public void clear() {
-		for (int x = 0; x < alphabets; x++)
+		for (int x = 0; x < ALPHAPETS; x++)
 			root.children[x] = null;
+		
+		this.countOfNodes = 0;
 	}
 
 	// (h)
-	
 	public String[] allWordsPrefix(String prefix) {
 		prefix = prefix.toUpperCase();
 		if (!isPrefix(prefix)) {
 			return null;
 		}
 		TrieNode current = root;
-		for (int i = 0; i < prefix.length(); i++) {
-			char ch = prefix.charAt(i);
-			int index = ch - 'A';
+		for (int x = 0; x < prefix.length(); x++) {
+			int index = prefix.charAt(x) - 'A';
 			if (current.children[index] == null)
 				return null;
 
@@ -141,17 +134,18 @@ public class Trie {
 			StringBuilder sb = new StringBuilder();
 			allWordsPrefixHelper(current, sb, 0, prefix.substring(0, prefix.length()));
 		}
-		
-		
+		// to conform with the requirements I used an array here
 		String[] x = {};
-		x =  allwords.toArray(x);
+		x =  this.allwords.toArray(x);
+		allwords.clear();
 		return x;
 
 	}
 
 	// (h)
-	private ArrayList<String> allwords = new ArrayList<String>();
-	private void allWordsPrefixHelper(TrieNode node, StringBuilder str, int level, String initial) {
+	
+	public ArrayList<String> allwords = new ArrayList<String>();
+	public void allWordsPrefixHelper(TrieNode node, StringBuilder str, int level, String initial) {
 		if (node.isEndOfWord) {
 			// end of word is reached so we clear the string for the new word
 			str.delete(level, str.length());
@@ -160,11 +154,10 @@ public class Trie {
 				this.allwords.add(initial + str.toString());
 		}
 
-		// we can do this iterativaly...
-		for (int i = 0; i < alphabets; i++) {
-			if (node.children[i] != null) {
-				str.insert(level, Character.toString((char) (i + 'A')));
-				allWordsPrefixHelper(node.children[i], str, level + 1, initial);
+		for (int x = 0; x < ALPHAPETS; x++) {
+			if (node.children[x] != null) {
+				str.insert(level, Character.toString((char) (x + 'A')));
+				allWordsPrefixHelper(node.children[x], str, level + 1, initial);
 			}
 		}
 	}
@@ -174,5 +167,6 @@ public class Trie {
 	public int size() {
 		return countOfNodes;
 	}
+	
 
 }
