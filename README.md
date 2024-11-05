@@ -1,6 +1,7 @@
 # Trie-Data-Structure-Project
 A lab project implementing a Trie data structure using [Java](https://www.oracle.com/java/technologies/downloads/?er=221886).
-
+<br>
+Course: ICS 202 - Data Structures and Algorithms
 
 ## Getting Started
 No dependencies required, simply run with the **dictionary.txt** file included
